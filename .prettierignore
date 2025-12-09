@@ -1,0 +1,30 @@
+# Node stuff
+node_modules
+package-lock.json
+
+# Build output
+dist
+build
+public
+coverage
+
+# Environment
+.env
+.env.* 
+
+# Logs
+*.log
+
+# OS junk
+.DS_Store
+
+# Ignore minified files
+*.min.js
+*.min.css
+
+# WordPress junk folders
+wp-admin
+wp-includes
+
+# Version control folders
+.git
