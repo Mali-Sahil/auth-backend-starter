@@ -10,8 +10,8 @@ const sendEmail = async options => {
         },
     });
 
-    const emailTextual = mailGenerator.generatePlaintext(options.mailgenCOntent);
-    const emailHtml = mailGenerator.generate(options.mailgenCOntent);
+    const emailTextual = mailGenerator.generatePlaintext(options.mailgenContent);
+    const emailHtml = mailGenerator.generate(options.mailgenContent);
 
     const transporter = nodemailer.createTransport({
         host: process.env.MAILTRAP_SMTP_HOST,
