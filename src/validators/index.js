@@ -24,5 +24,16 @@ const userRegisterValidator = function () {
     ];
 };
 
+const userLoginValidator = function () {
+    return [
+        body("email")
+            .notEmpty()
+            .withMessage("Email is required.")
+            .isEmail()
+            .withMessage("Email invalid."),
 
-export {userRegisterValidator}
+        body("password").notEmpty().withMessage("Password is required."),
+    ];
+};
+
+export { userRegisterValidator, userLoginValidator };
