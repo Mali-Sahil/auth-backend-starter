@@ -2,7 +2,11 @@ import User from "../models/user.models.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import { asyncHandler } from "../utils/async-handler.js";
-import { emailVerificationMailgenContent, sendEmail } from "../utils/mail.js";
+import {
+    emailVerificationMailgenContent,
+    sendEmail,
+    forgotPasswordMailgenContent,
+} from "../utils/mail.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 
@@ -276,6 +280,85 @@ const refreshAccessToken = asyncHandler(async function (req, res) {
     }
 });
 
+const forgotPasswordRequest = asyncHandler(async function (req, res) {
+    const { email } = req.body;
+
+    const user = await User.findOne({
+        email,
+    });
+
+    if (!user) {
+        throw new ApiError(404, "User does not exist");
+    }
+
+    const { unhashedToken, hashedToken, tokenExpiry } = user.generateTemporaryToken();
+
+    user.forgotPasswordToken = hashedToken;
+    user.forgotPasswordExpiry = tokenExpiry;
+
+    await user.save({ validateBeforeSave: false });
+
+    sendEmail({
+        email: user.email,
+        subject: "Password reset request",
+        mailgenContent: forgotPasswordMailgenContent(
+            user.username,
+            `${req.protocol}://${req.get("host")}/api/v1/auth/forgot-password/${unhashedToken}`,
+        ),
+    });
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, {}, "Link to reset password sent on your email."));
+});
+
+const resetForgotPassword = asyncHandler(async function (req, res) {
+    const { resetPasswordToken } = req.params;
+    const { newPassword } = req.body;
+
+    const hashedPasswordToken = crypto
+        .createHash("sha256")
+        .update(resetPasswordToken)
+        .digest("hex");
+
+    const user = await User.findOne({
+        forgotPasswordToken: hashedPasswordToken,
+        forgotPasswordExpiry: { $gt: Date.now() },
+    });
+
+    if (!user) {
+        throw new ApiError(489, "Password reset token expired or invalid.");
+    }
+
+    user.password = newPassword;
+
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordExpiry = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    return res.status(200).json(new ApiResponse(200, {}, "Passwrod reset successfully"));
+});
+
+const changeCurrentPassword = asyncHandler(async function (req, res) {
+    const { oldPassword } = req.body;
+    const { newPassword } = req.body;
+
+    const user = await User.findById(req.user?._id);
+
+    const isPasswordValid = await user.isPasswordCorrect(oldPassword);
+
+    if (!isPasswordValid) {
+        throw new ApiError(400, "Invalid Old Password");
+    }
+
+    user.password = newPassword;
+
+    await user.save({ validateBeforeSave: false });
+    
+    return res.status(200).json(new ApiResponse(200, {}, "Current password changed succesfully."));
+});
+
 // const verifyEmail = asyncHandler(async function(req, res){})
 
 export {
@@ -286,4 +369,7 @@ export {
     verifyEmail,
     resendEmailVerification,
     refreshAccessToken,
+    forgotPasswordRequest,
+    resetForgotPassword,
+    changeCurrentPassword,
 };
