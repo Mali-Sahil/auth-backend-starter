@@ -1,0 +1,174 @@
+{
+  "info": {
+    "_postman_id": "7899671b-40ba-42cb-a80b-4aea031a2d4d",
+    "name": "auth-backend-starter",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "healthcheck",
+      "item": [
+        {
+          "name": "home",
+          "id": "649a929e-8ab2-4584-b229-fcf13b3fadbb",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base}}/api/v1/healthcheck/",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "healthcheck",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "c646bc0b-bed1-45f2-9666-bbc2cd5c77c7"
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "register",
+          "id": "c288d38b-414b-47f3-a13c-ac60b92e22bb",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"user1@example.com\",\r\n    \"username\": \"user1\",\r\n    \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/api/v1/auth/register",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "id": "9a11c000-df12-4656-b24c-d5ac7e0af63b",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OTQ2NWFlYjM1NjBiNDc1ZDRiMjAyMDMiLCJlbWFpbCI6Im9uZUBvbmUyLmNvbSIsInVzZXJuYW1lIjoib25lMiIsImlhdCI6MTc2NjI0MjIzNiwiZXhwIjoxNzY2MzI4NjM2fQ.NhwTtkTurjQh27yBKXRFN0kMQ3Vsq-WImo2nDLQU-Vs",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"user1@example.com\",\r\n    \"username\": \"user1\",\r\n    \"password\": \"123456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/api/v1/auth/login",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "id": "d9e39cde-951c-4ec7-b547-6a0e016be1ff",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OTQ2NWFlYjM1NjBiNDc1ZDRiMjAyMDMiLCJlbWFpbCI6Im9uZUBvbmUyLmNvbSIsInVzZXJuYW1lIjoib25lMiIsImlhdCI6MTc2NjIyNzA5MSwiZXhwIjoxNzY2MzEzNDkxfQ.VGbcc8fIEGzpsagLyCw4sAWkHwwHNdp91aksn9tv1FA",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/api/v1/auth/logout",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCurrentUser",
+          "id": "d5336e8f-b807-4d45-9771-c95461e7aa3a",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base}}/api/v1/auth/user",
+              "host": [
+                "{{base}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "user"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "d15f13bb-1c8a-4b60-8f06-a91343638d30"
+    }
+  ]
+}
